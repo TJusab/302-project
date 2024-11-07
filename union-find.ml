@@ -3,41 +3,41 @@ type 'a graph = {
   edges: ('a * 'a) list
 }
 
-(* Creates the parent and rank tables and sets each node as its own parent with an initial rank of 0 *)
+(* Creates the representant and rank tables and sets each node as its own representant with an initial rank of 0 *)
 let initialize_union_find (nodes : 'a list) =
-  let parent = Hashtbl.create (List.length nodes) in
+  let representant = Hashtbl.create (List.length nodes) in
   let rank = Hashtbl.create (List.length nodes) in
   List.iter (fun node ->
-    Hashtbl.add parent node node;  (* Each node is its own parent *)
+    Hashtbl.add representant node node;  (* Each node is its own representant *)
     Hashtbl.add rank node 0        (* Initial rank is 0 *)
   ) nodes;
-  (parent, rank)
+  (representant, rank)
 
-(* Finds the parent of the done and performs path compression simultaneously *)
-let rec find (parent : ('a, 'a) Hashtbl.t) (node : 'a) =
-  let root = Hashtbl.find parent node in
-  if root <> node then
-    let root_parent = find parent root in
-    Hashtbl.replace parent node root_parent;  (* Path compression *)
-    root_parent
+(* Finds the representant of the node and performs path compression simultaneously *)
+let rec find (representant : ('a, 'a) Hashtbl.t) (node : 'a) =
+  let rep = Hashtbl.find representant node in
+  if rep <> node then
+    let rep_representant = find representant rep in
+    Hashtbl.replace representant node rep_representant;  (* Path compression *)
+    rep_representant
   else
-    root
+    rep
 
-(* Finds the roots of the two sets containing x and y and indicate the presence of a cycle 
+(* Finds the reps of the two sets containing x and y and indicate the presence of a cycle 
    if x and y are already in the same set  *)
-let union (parent : ('a, 'a) Hashtbl.t) (rank : ('a, int) Hashtbl.t) (x : 'a) (y : 'a) : bool =
-  let root_x = find parent x in
-  let root_y = find parent y in
-  if root_x <> root_y then
-    let rank_x = Hashtbl.find rank root_x in
-    let rank_y = Hashtbl.find rank root_y in
+let union (representant : ('a, 'a) Hashtbl.t) (rank : ('a, int) Hashtbl.t) (x : 'a) (y : 'a) : bool =
+  let rep_x = find representant x in
+  let rep_y = find representant y in
+  if rep_x <> rep_y then
+    let rank_x = Hashtbl.find rank rep_x in
+    let rank_y = Hashtbl.find rank rep_y in
     if rank_x > rank_y then
-      Hashtbl.replace parent root_y root_x
+      Hashtbl.replace representant rep_y rep_x
     else if rank_x < rank_y then
-      Hashtbl.replace parent root_x root_y
+      Hashtbl.replace representant rep_x rep_y
     else (
-      Hashtbl.replace parent root_y root_x;
-      Hashtbl.replace rank root_x (rank_x + 1)
+      Hashtbl.replace representant rep_y rep_x;
+      Hashtbl.replace rank rep_x (rank_x + 1)
     );
     false (* No cycle detected *)
   else
@@ -46,8 +46,8 @@ let union (parent : ('a, 'a) Hashtbl.t) (rank : ('a, int) Hashtbl.t) (x : 'a) (y
 
 (* Detect cycle function *)
 let detect_cycle (g : 'a graph) : bool =
-  let parent, rank = initialize_union_find g.nodes in
-  List.exists (fun (u, v) -> union parent rank u v) g.edges
+  let representant, rank = initialize_union_find g.nodes in
+  List.exists (fun (u, v) -> union representant rank u v) g.edges
 
 
 (* Example usage *)
