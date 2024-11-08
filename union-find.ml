@@ -8,8 +8,10 @@ let initialize_union_find (nodes : 'a list) =
   let representant = Hashtbl.create (List.length nodes) in
   let rank = Hashtbl.create (List.length nodes) in
   List.iter (fun node ->
-    Hashtbl.add representant node node;  (* Each node is its own representant *)
-    Hashtbl.add rank node 0        (* Initial rank is 0 *)
+    (* Each node is its own representant *)
+    Hashtbl.add representant node node;  
+    (* Initial rank is 0 *)
+    Hashtbl.add rank node 0        
   ) nodes;
   (representant, rank)
 
