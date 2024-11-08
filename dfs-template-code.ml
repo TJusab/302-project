@@ -23,29 +23,21 @@ type 'a graph = {
     4. Mark the node as Black after exploring all its neighbors
 *)
 
+let find_neighbors_tests: (('a graph * 'a) * 'a list) list = []
+
+(* Use List.fold_left *)
 let find_neighbors (graph: 'a graph) (vertex: 'a): 'a list =
   raise NotImplemented
 
+let dfs_tests: (('a graph * 'a * 'a option) * bool) list = []
+
+(* May use List.assoc to look up and edit vertex color *)
+(* Use List.exists *)
 let rec dfs (graph: 'a graph) (vertex: 'a) (parent: 'a option): bool =
-  let vertex_color = (List.assoc vertex graph.nodes) in
-  vertex_color := Grey;
-  
-  let neighbors = find_neighbors graph vertex in
-  List.exists (fun neighbor ->
-      let neighbor_color = List.assoc neighbor graph.nodes in
-      match !neighbor_color with
-      | White ->
-          if dfs graph neighbor (Some vertex) then true else false 
-      | Grey ->
-          (* If the neighbor is Grey and not the parent, cycle found *)
-          (match parent with
-           | Some p when p = neighbor -> false (* If the neighbor is the parent, ignore *)
-           | _ -> true)
-      | Black -> false
-    ) neighbors
-  
+  raise NotImplemented
+
+let detect_cyle_tests: ('a graph * bool) list = []
+
+(* Use List.exists *)
 let detect_cycle (graph: 'a graph): bool = 
-  List.exists (fun (vertex, color) ->
-      if !color = White then dfs graph vertex None
-      else false
-    ) graph.nodes
+  raise NotImplemented
