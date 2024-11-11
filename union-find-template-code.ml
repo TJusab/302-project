@@ -8,23 +8,41 @@ type 'a graph = {
 
 let initialize_union_find_tests = []
 
-(* Creates the representant and rank tables and sets each node as its own representant with an initial rank of 0 *)
-(* Use Hashtable functions: Hashtbl.create, Hashtbl.add *)
+(** 
+  Initializes the Union-Find structure with each node as its own representative and an initial rank of 0.
+  Used for tracking connected components and ranks.
+  
+  @param nodes A list of nodes in the graph.
+  @return A tuple containing two hash tables:
+          - The first table (`representant`) maps each node to its own initial representative.
+          - The second table (`rank`) maps each node to an initial rank of 0.
+*)
 let initialize_union_find (nodes : 'a list) =
   raise NotImplemented
 
-(* Finds the representant of the node and performs path compression simultaneously *)
+(** 
+  Finds the representant of the node and performs path compression simultaneously.
+  This function navigates up the chain of representatives to find the root of the set.
 
-let find_tests = []
-
+  @param representant A hash table mapping each node to its current representative.
+  @param node The node for which to find the representative.
+  @return The representative node (root) of the set containing the node
+*)
 let rec find (representant : ('a, 'a) Hashtbl.t) (node : 'a) =
   raise NotImplemented
 
-(* Finds the reps of the two sets containing x and y and indicate the presence of a cycle 
-   if x and y are already in the same set  *)
-
-let union_tests: ((('a, 'a) Hashtbl.t * ('a, int) Hashtbl.t * 'a * 'a) * bool) list = []
-
+(** 
+  Finds the representatns of the two sets containing x and y and indicate the presence of a cycle if x and y are already in the same set.
+  This function performs union by rank, merging the sets containing x and y under the root with higher rank. If x and y are already in the same set, a cycle is detected.
+  
+  @param representant A hash table mapping each node to its representative in the Union-Find structure.
+  @param rank A hash table mapping each node to its rank in the Union-Find structure.
+  @param x The first node to union.
+  @param y The second node to union.
+  @return A boolean value indicating whether a cycle was detected:
+          - `true` if `x` and `y` were already in the same set (indicating a cycle).
+          - `false` if `x` and `y` were in different sets and have now been merged.
+*)
 let union (representant : ('a, 'a) Hashtbl.t) (rank : ('a, int) Hashtbl.t) (x : 'a) (y : 'a) : bool =
   let rep_x = find representant x in
   let rep_y = find representant y in
@@ -33,13 +51,26 @@ let union (representant : ('a, 'a) Hashtbl.t) (rank : ('a, int) Hashtbl.t) (x : 
   else
     raise NotImplemented (* Cycle detected *)
 
-let detect_cyle_tests: ('a graph * bool) list = []
+let detect_cyle_tests: ('a graph * bool) list = [
+  ({ nodes = ['a'; 'b']; edges = [('a', 'b')] }, false);
+  ({ nodes = ['a'; 'b'; 'c']; edges = [('a', 'b'); ('b', 'c'); ('c', 'a')] }, true);
+  ({ nodes = ['a'; 'b'; 'c']; edges = [('a', 'b')] }, false);
+  ({ nodes = ['a']; edges = [] }, false);
+]
 
-(* Detect cycle function *)
+(** 
+  Detects if there is a cycle in the graph using the Union-Find data structure.
+  Can be implemented by first initializing a union-find structure, then iteratively calling union on each edge.
+  
+  @param graph The input graph.
+  @return A boolean value indicating whether the graph contains a cycle:
+          - `true` if a cycle is detected,
+          - `false` otherwise.
+*)
 let detect_cycle (g : 'a graph) : bool =
   raise NotImplemented
 
-  
+
 (* Example usage *)
 let () =
   let graph = {
