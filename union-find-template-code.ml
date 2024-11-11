@@ -40,8 +40,8 @@ let rec find (representant : ('a, 'a) Hashtbl.t) (node : 'a) =
   @param x The first node to union.
   @param y The second node to union.
   @return A boolean value indicating whether a cycle was detected:
-          - `true` if `x` and `y` were already in the same set (indicating a cycle).
-          - `false` if `x` and `y` were in different sets and have now been merged.
+          - `true` if x and y were already in the same set (indicating a cycle).
+          - `false` if x and y were in different sets and have now been merged (no cycle).
 *)
 let union (representant : ('a, 'a) Hashtbl.t) (rank : ('a, int) Hashtbl.t) (x : 'a) (y : 'a) : bool =
   let rep_x = find representant x in
