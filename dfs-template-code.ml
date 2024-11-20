@@ -32,14 +32,6 @@ type color = White | Grey | Black
 *)
 let initialize_graph (graph: 'a graph): ('a * color ref) list = List.map(fun node -> (node, ref White)) graph.nodes
 
-let find_neighbors_tests: (('a graph * 'a) * 'a list) list = [
-  (({ nodes = ['a'; 'b'; 'c']; edges = [('a', 'b'); ('b', 'c')] }, 'a'), ['b']);
-  (({ nodes = ['a'; 'b'; 'c']; edges = [('a', 'b'); ('b', 'c')] }, 'b'), ['a'; 'c']);
-  (({ nodes = ['a'; 'b'; 'c']; edges = [('a', 'b'); ('b', 'c')] }, 'c'), ['b']);
-  (({ nodes = ['a'; 'b'; 'c'; 'd']; edges = [('a', 'b'); ('b', 'c'); ('c', 'd'); ('d', 'a')] }, 'd'), ['a'; 'c']);
-  (({ nodes = ['a'; 'b'; 'c']; edges = [] }, 'a'), [])
-]
-
 (** 
   Finds all neighbors of a given vertex in an undirected graph.
   
@@ -49,13 +41,6 @@ let find_neighbors_tests: (('a graph * 'a) * 'a list) list = [
 *)
 let find_neighbors (graph: 'a graph) (vertex: 'a): 'a list =
   raise NotImplemented
-
-let dfs_tests: (('a graph * (('a * color ref) list) * 'a * 'a option) * bool) list = [
-  (({ nodes = ['a'; 'b']; edges = [('a', 'b')] }, [('a', ref White); ('b', ref White)], 'a', None), false);
-  (({ nodes = ['a'; 'b'; 'c']; edges = [('a', 'b'); ('b', 'c'); ('c', 'a')] }, [('a', ref White); ('b', ref White); ('c', ref White)], 'a', None), true);
-  (({ nodes = ['a'; 'b'; 'c']; edges = [('a', 'b')] }, [('a', ref White); ('b', ref White); ('c', ref White)], 'b', None), false);
-  (({ nodes = ['a']; edges = [] }, [('a', ref White)], 'a', None), false);
-]
 
 (** 
   Performs a depth-first search (DFS) from a given vertex to detect cycles in an undirected graph.
@@ -72,6 +57,7 @@ let rec dfs (graph: 'a graph) (color_map: ('a * color ref) list) (vertex: 'a) (p
   raise NotImplemented
 
 let detect_cyle_tests: ('a graph * bool) list = [
+  ({ nodes = []; edges = [] }, false);
   ({ nodes = ['a'; 'b']; edges = [('a', 'b')] }, false);
   ({ nodes = ['a'; 'b'; 'c']; edges = [('a', 'b'); ('b', 'c'); ('c', 'a')] }, true);
   ({ nodes = ['a'; 'b'; 'c']; edges = [('a', 'b')] }, false);

@@ -52,6 +52,7 @@ let union (representant : ('a, 'a) Hashtbl.t) (rank : ('a, int) Hashtbl.t) (x : 
     raise NotImplemented (* Cycle detected *)
 
 let detect_cyle_tests: ('a graph * bool) list = [
+  ({ nodes = []; edges = [] }, false);
   ({ nodes = ['a'; 'b']; edges = [('a', 'b')] }, false);
   ({ nodes = ['a'; 'b'; 'c']; edges = [('a', 'b'); ('b', 'c'); ('c', 'a')] }, true);
   ({ nodes = ['a'; 'b'; 'c']; edges = [('a', 'b')] }, false);
